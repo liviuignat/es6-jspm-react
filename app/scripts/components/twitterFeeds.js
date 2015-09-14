@@ -6,9 +6,7 @@ export default class extends React.Component {
     super(props);
     this.twitterService = new TwitterFeedsService();
     this.state = {
-      feeds: [
-        'No feed so far'
-      ]
+      feeds: []
     };
   }
 
@@ -30,6 +28,6 @@ export default class extends React.Component {
   }
 
   renderFeed(item, index) {
-    return <li key={index}>{item}</li>;
+    return <li key={item.id}>{item.text}</li>;
   }
 }
