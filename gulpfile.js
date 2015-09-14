@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp       = require('gulp');
+var gulpJest   = require('./gulp-jest');
 var $          = require('gulp-load-plugins')();
 var sync       = $.sync(gulp).sync;
 var del        = require('del');
@@ -96,7 +97,7 @@ gulp.task('serve', function() {
 gulp.task('jest', function () {
   var nodeModules = path.resolve('./node_modules');
   return gulp.src('app/scripts/**/__tests__')
-    .pipe($.jest({
+    .pipe(gulpJest({
       scriptPreprocessor: nodeModules + '/babel-jest',
       unmockedModulePathPatterns: [nodeModules + '/react']
     }));
