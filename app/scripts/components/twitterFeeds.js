@@ -1,13 +1,23 @@
 import React from 'react';
+import TwitterFeedsService from './../common/twitterFeedsService'
 
 export default class extends React.Component {
   constructor(props) {
     super(props);
+    this.twitterService = new TwitterFeedsService();
     this.state = {
       feeds: [
         'No feed so far'
       ]
     };
+  }
+
+  componentDidMount() {
+    this.twitterService.getTweets().then((items) => {
+      this.setState({
+        feeds: items
+      });
+    });
   }
 
   render() {
