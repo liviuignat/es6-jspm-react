@@ -1,4 +1,5 @@
 import React from 'react';
+import TwitterFeedItem from './twitterFeedItem'
 import TwitterFeedsService from './../common/twitterFeedsService'
 
 export default class extends React.Component {
@@ -28,6 +29,6 @@ export default class extends React.Component {
   }
 
   renderFeed(item, index) {
-    return <li key={item.id}>{item.text}</li>;
+    return <TwitterFeedItem key={item.id} item={item}></TwitterFeedItem>;
   }
 }
