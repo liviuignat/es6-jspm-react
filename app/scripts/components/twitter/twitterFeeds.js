@@ -6,8 +6,9 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
     this.twitterService = TwitterFeedsService.getInstance();
+
     this.state = {
-      feeds: []
+      feeds: this.props.feeds
     };
   }
 

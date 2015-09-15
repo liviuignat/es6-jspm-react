@@ -19,10 +19,10 @@ describe('Twitter feed item', function() {
     }];
 
     const twitterService = new TwitterFeedsService();
-    twitterService.getTweets = jest.genMockFunction().mockReturnValueOnce(Promise.resolve(itemData));
+    twitterService.getTweets = jest.genMockFunction().mockReturnValue(Promise.resolve(itemData));
     TwitterFeedsService.getInstance = jest.genMockFunction().mockReturnValue(twitterService);
 
-    component = TestUtils.renderIntoDocument(<TwitterFeeds />);
+    component = TestUtils.renderIntoDocument(<TwitterFeeds feeds={itemData}/>);
   });
 
   it('should contain the text "Liviu"', function() {
