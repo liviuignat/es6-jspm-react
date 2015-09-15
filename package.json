@@ -23,6 +23,7 @@
     "gulp-util": "^3.0.6",
     "gulp-webserver": "^0.9.1",
     "harmonize": "^1.4.4",
+    "history": "^1.9.1",
     "jest-cli": "^0.5.4",
     "react": "^0.13.3",
     "react-router": "^1.0.0-rc1",
