@@ -40,7 +40,7 @@ var bundler = {
 gulp.task('styles', function () {
   return gulp.src('./app/styles/main.less')
     .pipe(less({
-      paths: [ path.join(__dirname, 'less', 'includes') ]
+      paths: [path.join(__dirname, 'less', 'includes')]
     }))
     .pipe($.autoprefixer('last 1 version'))
     .pipe(gulp.dest('dist/styles'))
@@ -89,11 +89,21 @@ gulp.task('serve', function () {
 
 gulp.task('jest', function () {
   var nodeModules = path.resolve('./node_modules');
-  return gulp.src('app/scripts/**/__tests__')
-    .pipe(gulpJest({
-      scriptPreprocessor: nodeModules + '/babel-jest',
-      unmockedModulePathPatterns: [nodeModules + '/react']
-    }));
+  var options = {
+    testDirectoryName: 'scripts',
+    testFileExtensions: ['spec.js'],
+    scriptPreprocessor: nodeModules + '/babel-jest',
+    unmockedModulePathPatterns: [
+      'react',
+      nodeModules + '/react',
+      nodeModules + '/reflux',
+      nodeModules + '/react-router',
+      nodeModules + '/react-tools'
+    ],
+    verbose: true
+  };
+
+  return gulp.src('app').pipe(gulpJest(options));
 });
 
 gulp.task('set-production', function () {

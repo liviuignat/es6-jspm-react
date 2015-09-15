@@ -1,6 +1,6 @@
 import React from 'react';
 import TwitterFeedItem from './twitterFeedItem';
-import TwitterFeedsService from './../common/twitterFeedsService';
+import TwitterFeedsService from './../../common/twitterFeedsService';
 
 export default class extends React.Component {
   constructor(props) {
