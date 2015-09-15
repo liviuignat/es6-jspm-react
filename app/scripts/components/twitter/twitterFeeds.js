@@ -28,7 +28,7 @@ export default class extends React.Component {
     );
   }
 
-  renderFeed(item, index) {
+  renderFeed(item) {
     return <TwitterFeedItem key={item.id} item={item}></TwitterFeedItem>;
   }
 }

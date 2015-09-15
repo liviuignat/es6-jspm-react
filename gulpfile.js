@@ -27,7 +27,7 @@ var bundler = {
     return this.w && this.w.bundle()
       .on('error', $.util.log.bind($.util, 'Browserify Error'))
       .pipe(source('app.js'))
-      .pipe(gulp.dest('dist/scripts'));
+      .pipe(gulp.dest('.dist/scripts'));
   },
   watch: function () {
     this.w && this.w.on('update', this.bundle.bind(this));
@@ -43,11 +43,18 @@ gulp.task('styles', function () {
       paths: [path.join(__dirname, 'less', 'includes')]
     }))
     .pipe($.autoprefixer('last 1 version'))
-    .pipe(gulp.dest('dist/styles'))
+    .pipe(gulp.dest('.dist/styles'))
     .pipe($.size());
 });
 
-gulp.task('scripts', function () {
+gulp.task('lint', function() {
+  return gulp.src('./app/scripts/**/*.js')
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.eslint.failAfterError());
+});
+
+gulp.task('scripts', ['lint'], function () {
   bundler.init();
   return bundler.bundle();
 });
@@ -58,7 +65,7 @@ gulp.task('html', function () {
     .pipe(assets)
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('.dist'))
     .pipe($.size());
 });
 
@@ -69,18 +76,18 @@ gulp.task('images', function () {
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/images'))
+    .pipe(gulp.dest('.dist/images'))
     .pipe($.size());
 });
 
 gulp.task('extras', function () {
   return gulp.src(['app/*.txt', 'app/*.ico'])
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('.dist/'))
     .pipe($.size());
 });
 
 gulp.task('serve', function () {
-  gulp.src('dist')
+  gulp.src('.dist')
     .pipe($.webserver({
       livereload: true,
       port: 9000
@@ -111,22 +118,22 @@ gulp.task('set-production', function () {
 });
 
 gulp.task('minify:js', function () {
-  return gulp.src('dist/scripts/**/*.js')
+  return gulp.src('.dist/scripts/**/*.js')
     .pipe($.uglify())
-    .pipe(gulp.dest('dist/scripts/'))
+    .pipe(gulp.dest('.dist/scripts/'))
     .pipe($.size());
 });
 
 gulp.task('minify:css', function () {
-  return gulp.src('dist/styles/**/*.css')
+  return gulp.src('.dist/styles/**/*.css')
     .pipe($.minifyCss())
-    .pipe(gulp.dest('dist/styles'))
+    .pipe(gulp.dest('.dist/styles'))
     .pipe($.size());
 });
 
 gulp.task('minify', ['minify:js', 'minify:css']);
 
-gulp.task('clean', del.bind(null, 'dist'));
+gulp.task('clean', del.bind(null, '.dist'));
 
 gulp.task('bundle', ['html', 'styles', 'scripts', 'images', 'extras']);
 
@@ -138,12 +145,13 @@ gulp.task('build:production', sync(['set-production', 'build', 'minify']));
 
 gulp.task('serve:production', sync(['build:production', 'serve']));
 
-gulp.task('test', ['jest']);
+gulp.task('test', ['lint', 'jest']);
 
-gulp.task('default', ['build']);
+gulp.task('default', ['watch']);
 
 gulp.task('watch', sync(['clean-bundle', 'serve']), function () {
   bundler.watch();
+  gulp.watch('app/scripts/**/*.js', ['test']);
   gulp.watch('app/*.html', ['html']);
   gulp.watch('app/styles/**/*.less', ['styles']);
   gulp.watch('app/images/**/*', ['images']);
