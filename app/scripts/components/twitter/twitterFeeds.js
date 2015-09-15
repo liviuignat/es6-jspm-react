@@ -5,7 +5,7 @@ import TwitterFeedsService from './../../common/twitterFeedsService';
 export default class extends React.Component {
   constructor(props) {
     super(props);
-    this.twitterService = new TwitterFeedsService();
+    this.twitterService = TwitterFeedsService.getInstance();
     this.state = {
       feeds: []
     };
